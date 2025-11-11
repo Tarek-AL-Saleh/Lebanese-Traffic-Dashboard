@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend
 } from "chart.js"; 
+import { useMargin } from "recharts";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -32,7 +33,7 @@ export default function App() {
       setFilteredData(processed);
     }
     loadData();
-  }, []);
+  }, []); 
 
   const applyFilters = () => {
     const filtered = data.filter(row => {
@@ -48,7 +49,7 @@ export default function App() {
     setFilteredData(filtered);
   };
 
-  // Statistics
+  // Statistics of Speed
   const numbers = filteredData.map(r => r.speed).filter(v => !isNaN(v));
   const min = Math.min(...numbers);
   const max = Math.max(...numbers);
@@ -64,10 +65,10 @@ export default function App() {
   });
   const labels = counts.map((_, i) => `${min + i*binSize}-${min + (i+1)*binSize}`);
 
-  const highlightColor = "#6a5acd"; // bluish-purple
+  const highlightColor = "#6a5acd";
 
   return (
-    <Box sx={{ width: "100%", px: { xs: 2, sm: 4 }, py: { xs: 2, sm: 4 }, fontFamily: "Roboto, sans-serif", backgroundColor: "#fff" }}>
+    <Box sx={{px: { xs: 2, sm: 4 }, py: { xs: 2, sm: 4 }, fontFamily: "Roboto, sans-serif", backgroundColor: "#fff" }} style={{ minHeight: "100vh", width: "90vw", useMargin: "border-box" }}>
 
       <Typography variant="h4" align="center" sx={{ mb: 3, color: highlightColor }}>
         Lebanese Traffic Dashboard
