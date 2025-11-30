@@ -7,7 +7,7 @@ export default function DataVisualization({ data, field }) {
   return (
     <BarChart width={600} height={300} data={chartData}>
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" /> 
+      <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
       <Bar dataKey="value" fill="#8884d8" />

@@ -23,7 +23,7 @@ export default function App() {
     startDate: "2015-01-01",
     endDate: "2019-12-31",
     VelocityMin: 0,
-    VelocityMax: 200
+    VelocityMax: 200,
   });
 
   useEffect(() => {
@@ -44,15 +44,13 @@ export default function App() {
   }, [auth.token]);
 
   const applyFilters = () => {
-    const filtered = data.filter(row => {
+    const filtered = data.filter((row) => {
       const rowDate = new Date(row.timestamp);
       const start = new Date(filters.startDate);
       const end = new Date(filters.endDate);
       const velocity = row.speed;
 
-      return rowDate >= start && rowDate <= end &&
-             velocity >= filters.VelocityMin &&
-             velocity <= filters.VelocityMax;
+      return rowDate >= start && rowDate <= end && velocity >= filters.VelocityMin && velocity <= filters.VelocityMax;
     });
     setFilteredData(filtered);
   };
