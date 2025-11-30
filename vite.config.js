@@ -10,4 +10,10 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      // Proxy API calls to the backend during development
+      '/api': 'http://localhost:4000'
+    }
+  }
 })

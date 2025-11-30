@@ -1,0 +1,20 @@
+{
+  "name": "lebanon-traffic-server",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "load-data": "node loadData.js",
+    "create-users": "node create_users.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.3.1",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.0"
+  }
+}

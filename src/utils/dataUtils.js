@@ -1,17 +1,23 @@
-import Papa from 'papaparse';
-
-// Load CSV from public folder (only first 50 rows)
+// Previously the app loaded CSV client-side. For phase 2 the backend serves data.
+// Fetch data from the Node.js server at /api/data
 export async function fetchTrafficData() {
-  return new Promise((resolve, reject) => {
-    Papa.parse("/data/sample_data.csv", {
-      download: true,
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-      complete: (results) => resolve(results.data.slice(0, 50)),
-      error: (err) => reject(err)
-    });
-  });
+  const url = (import.meta.env.VITE_API_BASE || 'http://localhost:4000') + '/api/data?limit=100';
+  const token = localStorage.getItem('auth_token');
+  const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+  const res = await fetch(url, { headers });
+  if (!res.ok) throw new Error('Failed to fetch data');
+  const data = await res.json();
+  // normalize to the same shape old code expected
+  return data.map(r => ({
+    Date: r.date ? (new Date(r.date)).toLocaleDateString() : '',
+    Time: r.time || '',
+    'Coordinate\t (Lon, Lat)': r.lon != null && r.lat != null ? `${r.lon},${r.lat}` : '',
+    Course: r.course,
+    Velocity: r.velocity,
+    'OSM ID': r.osm_id,
+    timestamp: r.date ? new Date(`${r.date} ${r.time}`) : null,
+    speed: Math.round(r.velocity || 0)
+  }));
 }
 
 // Process CSV: parse timestamp and round velocity
