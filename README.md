@@ -7,10 +7,10 @@ Developed for **CSC443 – Web Programming** at the **Lebanese American Universi
 
 # Team Members
 
-Mohammad El Dayeh
-Tarek Al Saleh
-Ayman Kacan
-Hasan Sayour
+   * Mohammad El Dayeh
+   * Tarek Al Saleh
+   * Ayman Kacan
+   * Hasan Sayour
 
 ---
 
@@ -218,5 +218,6 @@ Stored in `logs/activity.log`.
 | Styling  | CSS / MUI            |
 
 ---
+
 
 
