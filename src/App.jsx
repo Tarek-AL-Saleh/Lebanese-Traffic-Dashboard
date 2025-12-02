@@ -19,7 +19,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 export default function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [displayedData, setDisplayedData] = useState([]);
   const [auth, setAuth] = useState(() => ({ token: localStorage.getItem('auth_token') || null, username: localStorage.getItem('auth_username') || null }));
   const [filters, setFilters] = useState({
     startDate: "2015-01-01",
@@ -34,15 +33,12 @@ export default function App() {
       try {
         const raw = await fetchTrafficData();
         const processed = processTrafficData(raw);
-        const displayed = processed.slice(0, 100);
         setData(processed);
         setFilteredData(processed);
-        setDisplayedData(displayed);
       } catch (err) {
         console.error('Failed to load data', err);
         setData([]);
         setFilteredData([]);
-        setDisplayedData([]);
       }
     }
     // Only load data when there's a token
@@ -370,7 +366,7 @@ export default function App() {
                 </tr>
               </thead>
               <tbody>
-                {displayedData.map((row, idx) => (
+                {filteredData.slice(0,100).map((row, idx) => (
                   <tr key={idx} style={{ borderBottom: "1px solid #ddd" }}>
                     <td>{row.Date}</td>
                     <td>{row.Time}</td>
