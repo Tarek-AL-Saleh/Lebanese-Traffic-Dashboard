@@ -30,6 +30,7 @@ export default function DataTable({ filteredData }) {
             <tr>
               <th>Date</th>
               <th>Time</th>
+              <th>Governorate</th>
               <th>Coordinates</th>
               <th>Course</th>
               <th>Velocity</th>
@@ -41,6 +42,7 @@ export default function DataTable({ filteredData }) {
               <tr key={idx} style={{ borderBottom: "1px solid #ddd" }}>
                 <td>{row.Date}</td>
                 <td>{row.Time}</td>
+                <td>{row.state}</td>
                 <td>{row["Coordinate\t (Lon, Lat)"]}</td>
                 <td>{row.Course}</td>
                 <td style={{ fontWeight: "bold" }}>{row.speed}</td>

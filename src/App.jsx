@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchTrafficData, processTrafficData } from "./utils/dataUtils";
 import { Box, Typography, TextField, Button, Paper, Grid } from "@mui/material";
 import Login from './components/Login';
+import GovernorateStatistics from './components/GovernorateStatistics';
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -24,6 +25,7 @@ export default function App() {
     endDate: "2019-12-31",
     VelocityMin: 0,
     VelocityMax: 200,
+    governorate: "",
   });
 
   useEffect(() => {
@@ -49,8 +51,15 @@ export default function App() {
       const start = new Date(filters.startDate);
       const end = new Date(filters.endDate);
       const velocity = row.speed;
+      const governorate = row.state;
 
-      return rowDate >= start && rowDate <= end && velocity >= filters.VelocityMin && velocity <= filters.VelocityMax;
+      return (
+        rowDate >= start &&
+        rowDate <= end &&
+        velocity >= filters.VelocityMin &&
+        velocity <= filters.VelocityMax &&
+        (!filters.governorate || governorate === filters.governorate)
+      );
     });
     setFilteredData(filtered);
   };
@@ -192,6 +201,28 @@ export default function App() {
               />
             </Grid>
 
+            <Grid item xs={12} sm={12} md={3}>
+              <TextField
+                shrink={true}
+                select
+                label="Governorate"
+                fullWidth
+                value={filters.governorate}
+                onChange={e => setFilters({ ...filters, governorate: e.target.value })}
+                size="small"
+                SelectProps={{
+                  native: true,
+                }}
+              >
+                <option value="">All Governorates</option>
+                {data.length > 0 && [...new Set(data.map(row => row.state).filter(Boolean))].sort().map((gov) => (
+                  <option key={gov} value={gov}>
+                    {gov}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+
             <Grid item xs={12} sm={12} md={2}>
               <Button
                 variant="contained"
@@ -257,6 +288,9 @@ export default function App() {
           ))}
         </Grid>
 
+
+        {/* Governorate Statistics */}
+        <GovernorateStatistics filteredData={filteredData} />
 
         {/* Histogram */}
         <Paper sx={{ mb: 4,mt: 4, p: 2, width: "90%", overflow: "hidden" }}>
@@ -324,6 +358,7 @@ export default function App() {
                 <tr>
                   <th>Date</th>
                   <th>Time</th>
+                  <th>Governorate</th>
                   <th>Coordinates</th>
                   <th>Course</th>
                   <th>Velocity</th>
@@ -335,6 +370,7 @@ export default function App() {
                   <tr key={idx} style={{ borderBottom: "1px solid #ddd" }}>
                     <td>{row.Date}</td>
                     <td>{row.Time}</td>
+                    <td>{row.state}</td>
                     <td>{row["Coordinate\t (Lon, Lat)"]}</td>
                     <td>{row.Course}</td>
                     <td style={{ fontWeight: "bold" }}>{row.speed}</td>

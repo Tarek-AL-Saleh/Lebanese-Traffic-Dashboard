@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, TextField, Button, Paper, Grid } from "@mui/material";
+import { Box, Typography, TextField, Button, Paper, Grid, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { getGovernorates } from "../utils/dataUtils";
 
-export default function Filters({ applyFilters, filters, setFilters }) {
+export default function Filters({ applyFilters, filters, setFilters, data }) {
+  const [governorates, setGovernorates] = useState([]);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const states = getGovernorates(data);
+      setGovernorates(states);
+    }
+  }, [data]);
   return (
     <>
       <Typography
@@ -78,6 +87,26 @@ export default function Filters({ applyFilters, filters, setFilters }) {
               }
               size="small"
             />
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={3}>
+            <FormControl fullWidth size="small">
+              <InputLabel shrink={true}>Governorate</InputLabel>
+              <Select
+                label="Governorate"
+                value={filters.governorate}
+                onChange={(e) =>
+                  setFilters({ ...filters, governorate: e.target.value })
+                }
+              >
+                <MenuItem value="">All Governorates</MenuItem>
+                {governorates.map((gov) => (
+                  <MenuItem key={gov} value={gov}>
+                    {gov}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={12} md={2}>
