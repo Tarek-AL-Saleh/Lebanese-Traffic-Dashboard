@@ -27,13 +27,12 @@ function importCsv() {
   }
 
   const rows = [];
-  const coordinateKey = null;
 
   fs.createReadStream(csvPath)
     .pipe(csv())
     .on('data', (data) => {
       // Find coordinate key (header contains "Coordinate")
-      const coordKey = Object.keys(data).find(k => k && k.toLowerCase().includes('coordinate'));
+      const coordKey = "Coordinate (Lon, Lat)";
       let lon = null, lat = null;
       if (coordKey && data[coordKey]) {
         const parts = data[coordKey].replace(/"/g, '').split(',').map(s => s.trim());
@@ -60,7 +59,7 @@ function importCsv() {
 
       const course = parseFloat(data['Course'] || data['course']) || null;
       const velocity = parseFloat(data['Velocity'] || data['velocity']) || null;
-      const osm = data['OSM ID'] || data['OSM ID'] || data['osm id'] || data['osm_id'] || null;
+      const osm = data['OSM ID'] || data['osm id'] || data['osm_id'] || null;
       const state = findGovernorate(lat, lon);
       rows.push([mysqlDate, timeStr || null, lon, lat, course, velocity, osm, state]);
     })

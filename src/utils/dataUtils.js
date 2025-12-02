@@ -30,7 +30,7 @@ export function processTrafficData(data) {
     ...row,
     timestamp: new Date(`${row.Date} ${row.Time}`),
     speed: Math.round(parseFloat(row.Velocity)),
-    coordinates: row['Coordinate	 (Lon, Lat)'] || row['Coordinates'] || 'N/A'
+    coordinates: row['Coordinate (Lon, Lat)'] || row['Coordinates'] || 'N/A'
   }));
 }
 
