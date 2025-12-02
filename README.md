@@ -206,6 +206,7 @@ Stored in `logs/activity.log`.
 | Backend  | Node.js + Express    |
 | Database | MySQL                |
 | Auth     | JWT + bcrypt         |
-| Styling  | CSS / MUI (optional) |
+| Styling  | CSS / MUI            |
 
 ---
+
