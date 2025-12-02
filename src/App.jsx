@@ -19,6 +19,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 export default function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [displayedData, setDisplayedData] = useState([]);
   const [auth, setAuth] = useState(() => ({ token: localStorage.getItem('auth_token') || null, username: localStorage.getItem('auth_username') || null }));
   const [filters, setFilters] = useState({
     startDate: "2015-01-01",
@@ -32,13 +33,16 @@ export default function App() {
     async function loadData() {
       try {
         const raw = await fetchTrafficData();
-        const processed = processTrafficData(raw).slice(0, 100);
+        const processed = processTrafficData(raw);
+        const displayed = processed.slice(0, 100);
         setData(processed);
         setFilteredData(processed);
+        setDisplayedData(displayed);
       } catch (err) {
         console.error('Failed to load data', err);
         setData([]);
         setFilteredData([]);
+        setDisplayedData([]);
       }
     }
     // Only load data when there's a token
@@ -214,7 +218,7 @@ export default function App() {
                   native: true,
                 }}
               >
-                <option value="">All Governorates</option>
+                <option value=""></option>
                 {data.length > 0 && [...new Set(data.map(row => row.state).filter(Boolean))].sort().map((gov) => (
                   <option key={gov} value={gov}>
                     {gov}
@@ -342,7 +346,7 @@ export default function App() {
               fontSize: { xs: "1rem", sm: "1.2rem" }
             }}
           >
-            First 50 Traffic Records
+            First 100 Traffic Records
           </Typography>
 
           <Box sx={{ width: "100%", overflowX: "auto" }}>
@@ -366,7 +370,7 @@ export default function App() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row, idx) => (
+                {displayedData.map((row, idx) => (
                   <tr key={idx} style={{ borderBottom: "1px solid #ddd" }}>
                     <td>{row.Date}</td>
                     <td>{row.Time}</td>

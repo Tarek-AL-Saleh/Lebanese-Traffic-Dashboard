@@ -5,7 +5,6 @@ const pool = require('./db');
 const turf = require('@turf/turf');
 const { logActivity } = require('./logger');
 
-// Path to CSV from project root
 const csvPath = path.join(__dirname, '..', 'public', 'data', 'sample_data.csv');
 const governorates = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'data', 'lebanon-governorates.geojson')));
 

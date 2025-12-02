@@ -5,7 +5,7 @@ const {
   DB_HOST = 'localhost',
   DB_PORT = 3306,
   DB_USER = 'root',
-  DB_PASSWORD = 'password',
+  DB_PASSWORD = '',
   DB_NAME = 'lebanon_traffic'
 } = process.env;
 

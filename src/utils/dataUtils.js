@@ -1,13 +1,16 @@
 // Previously the app loaded CSV client-side. For phase 2 the backend serves data.
 // Fetch data from the Node.js server at /api/data
 export async function fetchTrafficData() {
-  const url = (import.meta.env.VITE_API_BASE || 'http://localhost:4000') + '/api/data?limit=100';
+  const url = (import.meta.env.VITE_API_BASE || 'http://localhost:4000') + '/api/data?limit=10000';
+  
   const token = localStorage.getItem('auth_token');
   const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
   const res = await fetch(url, { headers });
+  console.log('Fetch response', res);
   if (!res.ok) throw new Error('Failed to fetch data');
   const data = await res.json();
-  // normalize to the same shape old code expected
+  console.log('Fetched data', data.length);
+
   return data.map(r => ({
     Date: r.date ? (new Date(r.date)).toLocaleDateString() : '',
     Time: r.time || '',
