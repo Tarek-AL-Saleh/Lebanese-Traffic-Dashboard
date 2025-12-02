@@ -5,6 +5,15 @@ Developed for **CSC443 – Web Programming** at the **Lebanese American Universi
 
 ---
 
+# Team Members
+
+Mohammad El Dayeh
+Tarek Al Saleh
+Ayman Kacan
+Hasan Sayour
+
+---
+
 ## 📘 Project Description
 
 The **Lebanon Traffic Dashboard** is a full-stack web application developed as part of the **CSC443 – Web Programming** course at the Lebanese American University (LAU). The project focuses on applying modern web development concepts to build a complete, data-driven system that visualizes real GPS traffic data from Lebanon.
@@ -209,4 +218,5 @@ Stored in `logs/activity.log`.
 | Styling  | CSS / MUI            |
 
 ---
+
 
