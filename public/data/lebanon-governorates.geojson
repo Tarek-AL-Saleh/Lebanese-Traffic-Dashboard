@@ -1,0 +1,94 @@
+{
+  "type": "FeatureCollection",
+  "name": "lebanon_governorates_simplified",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 1, "name_en": "Beirut", "name_ar": "بيروت" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.484, 33.915], [35.505, 33.905], [35.514, 33.889],
+          [35.498, 33.881], [35.485, 33.889], [35.484, 33.915]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 2, "name_en": "Mount Lebanon", "name_ar": "جبل لبنان" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.23, 33.52], [35.82, 33.52], [35.82, 34.18],
+          [35.30, 34.12], [35.23, 33.52]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 3, "name_en": "North Lebanon", "name_ar": "الشمال" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.68, 34.18], [36.34, 34.18], [36.34, 34.60],
+          [35.77, 34.60], [35.68, 34.18]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 4, "name_en": "Akkar", "name_ar": "عكّار" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.77, 34.60], [36.34, 34.60], [36.34, 34.69],
+          [35.82, 34.69], [35.77, 34.60]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 5, "name_en": "Beqaa", "name_ar": "البقاع" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.82, 33.52], [36.42, 33.52], [36.42, 34.18],
+          [35.82, 34.18], [35.82, 33.52]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 6, "name_en": "Baalbek-Hermel", "name_ar": "بعلبك الهرمل" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.82, 34.18], [36.42, 34.18], [36.42, 34.73],
+          [35.82, 34.69], [35.82, 34.18]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 7, "name_en": "South Lebanon", "name_ar": "الجنوب" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.23, 33.52], [35.59, 33.11], [35.83, 33.23],
+          [35.82, 33.52], [35.23, 33.52]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "gov_id": 8, "name_en": "Nabatieh", "name_ar": "النبطية" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [35.59, 33.11], [35.87, 33.11], [35.83, 33.23],
+          [35.59, 33.11]
+        ]]
+      }
+    }
+  ]
+}

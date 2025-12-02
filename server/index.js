@@ -18,7 +18,7 @@ function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'] || req.headers['Authorization'];
   const token = authHeader && authHeader.split(' ')[0] === 'Bearer' ? authHeader.split(' ')[1] : null;
   if (!token) return res.status(401).json({ error: 'Missing token' });
-  const secret = process.env.JWT_SECRET || 'dev_secret_change_this';
+  const secret = process.env.JWT_SECRET || 'sdiybt';
   try {
     const payload = jwt.verify(token, secret);
     req.user = { id: payload.sub, username: payload.username };
@@ -34,7 +34,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 app.get('/api/data', authenticateToken, async (req, res) => {
   const limit = Math.min(parseInt(req.query.limit || '100', 10) || 100, 10000);
   try {
-    const [rows] = await pool.query('SELECT id, `date`, `time`, lon, lat, course, velocity, osm_id FROM traffic ORDER BY id LIMIT ?', [limit]);
+    const [rows] = await pool.query('SELECT id, `date`, `time`, lon, lat, course, velocity, osm_id, state FROM traffic ORDER BY id LIMIT ?', [limit]);
     const actor = (req.user && req.user.username) || req.ip;
     logActivity(actor, `fetch_data limit=${limit}`);
     res.json(rows);

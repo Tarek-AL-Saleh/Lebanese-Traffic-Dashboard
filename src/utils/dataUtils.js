@@ -15,6 +15,7 @@ export async function fetchTrafficData() {
     Course: r.course,
     Velocity: r.velocity,
     'OSM ID': r.osm_id,
+    state: r.state || 'Unspecified',
     timestamp: r.date ? new Date(`${r.date} ${r.time}`) : null,
     speed: Math.round(r.velocity || 0)
   }));
@@ -56,4 +57,33 @@ export function calculateStats(data, field) {
   const max = Math.max(...numbers);
   const avg = numbers.reduce((a,b)=>a+b,0)/numbers.length;
   return { min, max, avg: avg.toFixed(2) };
+}
+
+// Get unique governorates from data
+export function getGovernorates(data) {
+  const states = new Set(data.map(row => row.state).filter(Boolean));
+  return Array.from(states).sort();
+}
+
+// Calculate average velocity per governorate
+export function calculateGovernorateStats(data) {
+  const statsByGovernorate = {};
+  
+  data.forEach(row => {
+    const state = row.state || 'Unspecified';
+    if (!statsByGovernorate[state]) {
+      statsByGovernorate[state] = { total: 0, count: 0 };
+    }
+    statsByGovernorate[state].total += row.speed || 0;
+    statsByGovernorate[state].count += 1;
+  });
+  
+  // Convert to array and calculate averages, then sort by average velocity descending
+  return Object.entries(statsByGovernorate)
+    .map(([governorate, { total, count }]) => ({
+      governorate,
+      avgVelocity: (total / count).toFixed(2),
+      count
+    }))
+    .sort((a, b) => parseFloat(b.avgVelocity) - parseFloat(a.avgVelocity));
 }

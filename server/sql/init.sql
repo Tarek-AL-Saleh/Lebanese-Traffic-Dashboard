@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `traffic` (
   `course` DOUBLE NULL,
   `velocity` DOUBLE NULL,
   `osm_id` VARCHAR(255) NULL,
+  `state` VARCHAR(30) NULL,
   INDEX (`date`),
   INDEX (`osm_id`)
 );

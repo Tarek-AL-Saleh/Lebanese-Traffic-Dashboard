@@ -2,12 +2,26 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
 const pool = require('./db');
+const turf = require('@turf/turf');
 const { logActivity } = require('./logger');
 
 // Path to CSV from project root
 const csvPath = path.join(__dirname, '..', 'public', 'data', 'sample_data.csv');
+const governorates = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'public', 'data', 'lebanon-governorates.geojson')));
 
-async function importCsv() {
+function findGovernorate(lat, lon) {
+  const pt = turf.point([lon, lat]);
+
+  for (const feature of governorates.features) {
+    if (turf.booleanPointInPolygon(pt, feature.geometry)) {
+      return ""+feature.properties.name_en;
+    }
+  }
+
+  return "Unspecified";
+}
+
+function importCsv() {
   if (!fs.existsSync(csvPath)) {
     console.error('CSV file not found at', csvPath);
     process.exit(1);
@@ -48,8 +62,8 @@ async function importCsv() {
       const course = parseFloat(data['Course'] || data['course']) || null;
       const velocity = parseFloat(data['Velocity'] || data['velocity']) || null;
       const osm = data['OSM ID'] || data['OSM ID'] || data['osm id'] || data['osm_id'] || null;
-
-      rows.push([mysqlDate, timeStr || null, lon, lat, course, velocity, osm]);
+      const state = findGovernorate(lat, lon);
+      rows.push([mysqlDate, timeStr || null, lon, lat, course, velocity, osm, state]);
     })
     .on('end', async () => {
       console.log(`Parsed ${rows.length} rows, inserting into DB...`);
@@ -58,7 +72,7 @@ async function importCsv() {
         try {
           await conn.beginTransaction();
           // bulk insert
-          const sql = 'INSERT INTO traffic (`date`, `time`, lon, lat, course, velocity, osm_id) VALUES ?';
+          const sql = 'INSERT INTO traffic (`date`, `time`, lon, lat, course, velocity, osm_id, state) VALUES ?';
           await conn.query(sql, [rows]);
           await conn.commit();
           console.log('Import complete');
