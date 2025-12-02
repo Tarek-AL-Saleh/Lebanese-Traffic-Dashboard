@@ -32,7 +32,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 // GET /api/data?limit=100
 app.get('/api/data', authenticateToken, async (req, res) => {
-  const limit = Math.min(parseInt(req.query.limit || '100', 10) || 100, 10000);
+  const limit = parseInt(req.query.limit || '100000', 10) || 100000;
   try {
     const [rows] = await pool.query('SELECT id, `date`, `time`, lon, lat, course, velocity, osm_id, state FROM traffic ORDER BY id LIMIT ?', [limit]);
     const actor = (req.user && req.user.username) || req.ip;
