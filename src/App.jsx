@@ -145,7 +145,7 @@ export default function App() {
         </Typography>
 
         {/* Filters */}
-        <Filters applyFilters={applyFilters} filters={filters} setFilters={setFilters} />
+        <Filters applyFilters={applyFilters} filters={filters} setFilters={setFilters} data={data}/>
         {/* Statistics */}
         <Statistics min={min} max={max} avg={avg}/>
         {/* Governorate Statistics */}

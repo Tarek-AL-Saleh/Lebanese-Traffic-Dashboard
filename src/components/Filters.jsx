@@ -13,17 +13,6 @@ export default function Filters({ applyFilters, filters, setFilters, data }) {
   }, [data]);
   return (
     <>
-      <Typography
-        align="center"
-        sx={{
-          mb: 3,
-          color: "#6a5acd",
-          fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.6rem" }
-        }}
-      >
-        Lebanese Traffic Dashboard
-      </Typography>
-
       <Paper
         sx={{
           margin:"auto",
