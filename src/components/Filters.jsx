@@ -90,23 +90,25 @@ export default function Filters({ applyFilters, filters, setFilters, data }) {
           </Grid>
 
           <Grid item xs={12} sm={12} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel shrink={true}>Governorate</InputLabel>
-              <Select
-                label="Governorate"
-                value={filters.governorate}
-                onChange={(e) =>
-                  setFilters({ ...filters, governorate: e.target.value })
-                }
-              >
-                <MenuItem value="">All Governorates</MenuItem>
-                {governorates.map((gov) => (
-                  <MenuItem key={gov} value={gov}>
-                    {gov}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              shrink={true}
+              select
+              label="Governorate"
+              fullWidth
+              value={filters.governorate}
+              onChange={e => setFilters({ ...filters, governorate: e.target.value })}
+              size="small"
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value=""></option>
+              {data.length > 0 && [...new Set(data.map(row => row.state).filter(Boolean))].sort().map((gov) => (
+                <option key={gov} value={gov}>
+                  {gov}
+                </option>
+              ))}
+            </TextField>
           </Grid>
 
           <Grid item xs={12} sm={12} md={2}>

@@ -14,7 +14,7 @@ export default function DataTable({ filteredData }) {
           fontSize: { xs: "1rem", sm: "1.2rem" }
         }}
       >
-        First 50 Traffic Records
+        First 100 Traffic Records
       </Typography>
 
       <Box sx={{ width: "100%", overflowX: "auto" }}>
@@ -38,7 +38,7 @@ export default function DataTable({ filteredData }) {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((row, idx) => (
+            {filteredData.slice(0,100).map((row, idx) => (
               <tr key={idx} style={{ borderBottom: "1px solid #ddd" }}>
                 <td>{row.Date}</td>
                 <td>{row.Time}</td>

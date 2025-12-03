@@ -6,7 +6,7 @@ export default function Statistics({ min, max, avg }) {
   return (
     <Grid
       container
-      spacing={4}
+      spacing={2}
       justifyContent="center"
       sx={{ mb: 4, width: "100%", margin: 0 }}
     >
@@ -26,7 +26,7 @@ export default function Statistics({ min, max, avg }) {
         >
           <Paper
             sx={{
-              p: 3,
+              p: 2,
               width: "100%",
               maxWidth: 250,
               textAlign: "center",

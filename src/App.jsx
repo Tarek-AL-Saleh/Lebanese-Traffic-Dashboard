@@ -12,7 +12,11 @@ import {
   Title,
   Tooltip,
   Legend
-} from "chart.js"; 
+} from "chart.js";
+import DataTable from "./components/DataTable"
+import Filters from "./components/Filters"
+import Histogram from "./components/Histogram"
+import Statistics from "./components/Statistics"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -141,246 +145,15 @@ export default function App() {
         </Typography>
 
         {/* Filters */}
-        <Paper
-          sx={{
-            mb: 4,
-            p: { xs: 2, sm: 3 },
-            backgroundColor: "#f9f9f9",
-            width: "90%",
-            overflow: "hidden"
-          }}
-        >
-          <Grid 
-            container 
-            spacing={2}
-            sx={{ width: "100%", margin: 0 }}
-          >
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                label="Start Date"
-                type="date"
-                fullWidth
-                value={filters.startDate}
-                onChange={e => setFilters({ ...filters, startDate: e.target.value })}
-                InputLabelProps={{ shrink: true }}
-                size="small"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={3}>
-              <TextField
-                label="End Date"
-                type="date"
-                fullWidth
-                value={filters.endDate}
-                onChange={e => setFilters({ ...filters, endDate: e.target.value })}
-                InputLabelProps={{ shrink: true }}
-                size="small"
-              />
-            </Grid>
-
-            <Grid item xs={6} sm={6} md={2}>
-              <TextField
-                label="Velocity Min"
-                type="number"
-                fullWidth
-                value={filters.VelocityMin}
-                onChange={e => setFilters({ ...filters, VelocityMin: Number(e.target.value) })}
-                size="small"
-              />
-            </Grid>
-
-            <Grid item xs={6} sm={6} md={2}>
-              <TextField
-                label="Velocity Max"
-                type="number"
-                fullWidth
-                value={filters.VelocityMax}
-                onChange={e => setFilters({ ...filters, VelocityMax: Number(e.target.value) })}
-                size="small"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={3}>
-              <TextField
-                shrink={true}
-                select
-                label="Governorate"
-                fullWidth
-                value={filters.governorate}
-                onChange={e => setFilters({ ...filters, governorate: e.target.value })}
-                size="small"
-                SelectProps={{
-                  native: true,
-                }}
-              >
-                <option value=""></option>
-                {data.length > 0 && [...new Set(data.map(row => row.state).filter(Boolean))].sort().map((gov) => (
-                  <option key={gov} value={gov}>
-                    {gov}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={2}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
-                  backgroundColor: highlightColor,
-                  "&:hover": { backgroundColor: "#5b4db3" },
-                  height: "100%"
-                }}
-                onClick={applyFilters}
-              >
-                Apply
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-
-
+        <Filters applyFilters={applyFilters} filters={filters} setFilters={setFilters} />
         {/* Statistics */}
-        <Grid 
-          container 
-          spacing={2} 
-          justifyContent="center"
-          sx={{ mb: 4, width: "100%", margin: 0 }}
-        >
-          {[
-            { title: "Min Velocity", value: min },
-            { title: "Max Velocity", value: max },
-            { title: "Average Velocity", value: avg }
-          ].map((stat, idx) => (
-            <Grid 
-              item 
-              xs={12} sm={6} md={4}
-              key={idx}
-              display="flex"
-              justifyContent="center"
-            >
-              <Paper 
-                sx={{ 
-                  p: 2, 
-                  width: "100%",
-                  maxWidth: 250,
-                  textAlign: "center", 
-                  border: `1px solid ${highlightColor}`
-                }}
-              >
-                <Typography 
-                  sx={{ 
-                    color: highlightColor,
-                    fontSize: { xs: "0.9rem", sm: "1rem" }
-                  }}
-                >
-                  {stat.title}
-                </Typography>
-
-                <Typography 
-                  sx={{ fontSize: { xs: "1.3rem", sm: "1.6rem" } }}
-                >
-                  {stat.value}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-
-
+        <Statistics min={min} max={max} avg={avg}/>
         {/* Governorate Statistics */}
         <GovernorateStatistics filteredData={filteredData} />
-
         {/* Histogram */}
-        <Paper sx={{ mb: 4,mt: 4, p: 2, width: "90%", overflow: "hidden" }}>
-          <Typography 
-            sx={{ 
-              mb: 2, 
-              textAlign: "center", 
-              color: highlightColor,
-              fontSize: { xs: "1rem", sm: "1.2rem" }
-            }}
-          >
-            Velocity Distribution
-          </Typography>
-
-          <Box sx={{ width: "100%", overflowX: "auto" }}>
-            <Box sx={{ height: 300 }}>
-              <Bar
-                data={{
-                  labels,
-                  datasets: [
-                    {
-                      label: "Count",
-                      data: counts,
-                      backgroundColor: highlightColor
-                    }
-                  ]
-                }}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: { legend: { display: false } },
-                  scales: {
-                    y: { beginAtZero: true },
-                    x: { title: { display: true, text: "Velocity Range" } }
-                  }
-                }}
-              />
-            </Box>
-          </Box>
-        </Paper>
-
+        <Histogram filteredData={filteredData} />
         {/* Data Table */}
-        <Paper sx={{ p: 2, width: "90%", overflow: "hidden" }}>
-          <Typography 
-            sx={{ 
-              mb: 2, 
-              textAlign: "center", 
-              color: highlightColor,
-              fontSize: { xs: "1rem", sm: "1.2rem" }
-            }}
-          >
-            First 100 Traffic Records
-          </Typography>
-
-          <Box sx={{ width: "100%", overflowX: "auto" }}>
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                textAlign: "center",
-                fontSize: "clamp(0.7rem, 1vw, 1rem)"
-              }}
-            >
-              <thead style={{ backgroundColor: highlightColor, color: "#fff" }}>
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Governorate</th>
-                  <th>Coordinates</th>
-                  <th>Course</th>
-                  <th>Velocity</th>
-                  <th>OSM ID</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.slice(0,100).map((row, idx) => (
-                  <tr key={idx} style={{ borderBottom: "1px solid #ddd" }}>
-                    <td>{row.Date}</td>
-                    <td>{row.Time}</td>
-                    <td>{row.state}</td>
-                    <td>{row["Coordinate\t (Lon, Lat)"]}</td>
-                    <td>{row.Course}</td>
-                    <td style={{ fontWeight: "bold" }}>{row.speed}</td>
-                    <td>{row["OSM ID"]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Box>
-        </Paper>
+        <DataTable filteredData={filteredData} />
       </Box>
       <Box 
         sx={{
